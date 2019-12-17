@@ -1,0 +1,74 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package com.company;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    static long[] numArr;
+    static int position;
+    static int numPrime;
+
+    public Main() {
+    }
+
+    public static int primeFactors(long number) {
+        long n = number;
+        List<Long> primefactors = new ArrayList();
+
+        for(long i = 2L; i <= n; ++i) {
+            while(n % i == 0L) {
+                primefactors.add(i);
+                n /= i;
+            }
+        }
+
+        for(int i = 0; i < primefactors.size() - 1; ++i) {
+            if (primefactors.get(i) != primefactors.get(i + 1)) {
+                ++numPrime;
+            }
+        }
+
+        ++numPrime;
+        return numPrime;
+    }
+
+    public static long[] transformation(String input) {
+        numArr = new long[input.length() - 2];
+        position = input.charAt(input.length() - 1) - 48;
+
+        int i;
+        for(i = 0; i < input.length() - 2; ++i) {
+            numArr[i] = (long)(input.charAt(i) - 48);
+        }
+
+        position = numArr.length - position;
+
+        for(i = 0; i < position; ++i) {
+            numArr[i] += numArr[position];
+        }
+
+        for(i = position + 1; i < numArr.length; ++i) {
+            numArr[i] = Math.abs(numArr[position] - numArr[i]);
+        }
+
+        numArr[position] = (long)primeFactors(Long.valueOf(input.substring(0, input.length() - 2)));
+        return numArr;
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        String number = input.nextLine();
+        transformation(number);
+
+        for(int i = 0; i < numArr.length; ++i) {
+            System.out.print(numArr[i]);
+        }
+
+    }
+}
